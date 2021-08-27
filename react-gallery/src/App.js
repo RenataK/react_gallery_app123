@@ -1,25 +1,110 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { PureComponent } from 'react';
+import axios from 'axios';
+import { 
+  Route, 
+  BrowserRouter, 
+  Switch,
+  Redirect } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//App Comps
+import SearchForm from './components/SearchForm';
+import Nav from './components/Nav';
+import Gallery from './components/Gallery';
+// import NotFound from './NotFound';
+
+import apiKey from './config';
+import NotFound from './components/NotFound';
+
+export default class App extends PureComponent {
+
+  constructor() {
+    super();
+    this.state = {
+      pics: [], 
+      sunsets: [],
+      nature: [],
+      puppies: [],
+      query: [],
+      loading: true
+    };
+  } 
+
+  componentDidMount() {
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=sunsets&per_page=24&format=json&nojsoncallback=1`)
+    .then(res => {
+      this.setState({
+        sunsets: res.data.photos.photo,
+        loading: false
+      });
+    })
+    .catch(err => {
+      console.log('Error fetching and parsing data', err);
+    });
+
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=nature&per_page=24&format=json&nojsoncallback=1`)
+    .then(res => {
+      this.setState({
+        nature: res.data.photos.photo,
+        loading: false
+      });
+    })
+    .catch(err => {
+      console.log('Error fetching and parsing data', err);
+    });
+
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=puppies&per_page=24&format=json&nojsoncallback=1`)
+    .then(res => {
+      this.setState({
+        puppies: res.data.photos.photo,
+        loading: false
+      });
+    })
+    .catch(err => {
+      console.log('Error fetching and parsing data', err);
+    });
+
+    this.performSearch();
+  }
+
+  performSearch = (query = 'watermelons') => {
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
+    .then(res => {
+      this.setState({
+        pics: res.data.photos.photo,
+        loading: false
+      });
+    })
+    .catch(err => {
+      console.log('Error fetching and parsing data', err);
+    });
+  }
+
+  render() {
+    console.log(this.state.pics);
+    return (
+      <BrowserRouter>
+        <div className="container">
+          <SearchForm onSearch={this.performSearch} />
+          <Nav />
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/sunsets" />} />
+            {/* <Route path="/" render={ () => <Gallery data={this.state.pics} /> } /> */}
+            <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
+            <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
+            <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} />} /> 
+            {/* <Route path="/" render={ () => <Gallery data={this.state.puppies} />} /> */}
+            <Route component={NotFound} />
+        </Switch>
+        <div class="photo-container">
+          {
+          (this.state.loading)
+          ? <p>Loading...</p>
+          : <Gallery path="/query" data={this.state.pics} /> 
+          }
+        </div>
+        </div>
+    </BrowserRouter>
+    )
+  }
 }
 
-export default App;
