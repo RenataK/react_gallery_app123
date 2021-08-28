@@ -24,7 +24,6 @@ export default class App extends PureComponent {
       sunsets: [],
       nature: [],
       puppies: [],
-      query: [],
       loading: true
     };
   } 
@@ -87,12 +86,11 @@ export default class App extends PureComponent {
           <SearchForm onSearch={this.performSearch} />
           <Nav />
           <Switch>
-            <Route exact path="/" render={() => <Redirect to="/sunsets" />} />
+            <Route path="/search" render={ () => <Redirect to="" onSearch={this.performSearch} />} /> 
             {/* <Route path="/" render={ () => <Gallery data={this.state.pics} /> } /> */}
             <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
             <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
             <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} />} /> 
-            {/* <Route path="/" render={ () => <Gallery data={this.state.puppies} />} /> */}
             <Route component={NotFound} />
         </Switch>
         <div class="photo-container">
