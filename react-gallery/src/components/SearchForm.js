@@ -14,6 +14,9 @@ export default class SearchForm extends Component {
         e.preventDefault();
         this.props.onSearch(this.query.value);
         e.currentTarget.reset();
+        let userSearch = this.query.value;
+        let path = `/search/${userSearch}`;
+        this.props.history.push(path);
     }
 
     render() {
@@ -37,3 +40,13 @@ export default class SearchForm extends Component {
     }
 }
 
+/* 
+As for your custom-search feature, you'll want to modify your current Route component with the /search path.
+Try removing that Redirect component and replace it with a Gallery component.
+You'll also want to modify the path,/search, by adding on a dynamic paremeter to it, such as /search/:query.
+
+In your SearchForm.handleSubmit method, you'll need to manipulate the browsers history so that the user will be brought to the /search/:query route, where query is whatever your SearchForm.state.searchText value is.
+There is a little bit of setup to do that, but it's not much!
+You'll just need to take care with setting it up.
+Check out the history object for doing this: https://github.com/remix-run/history/blob/main/docs/getting-started.md#user-content-basic-usage :slightly_smiling_face:
+*/

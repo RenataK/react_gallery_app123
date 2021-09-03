@@ -65,7 +65,7 @@ export default class App extends PureComponent {
     this.performSearch();
   }
 
-  performSearch = (query = 'watermelons') => {
+  performSearch = (query) => {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(res => {
       this.setState({
@@ -83,23 +83,26 @@ export default class App extends PureComponent {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm onSearch={this.performSearch} />
+          <SearchForm onSearch={this.performSearch} /> 
           <Nav />
-          <Switch>
-            <Route path="/search" render={ () => <Redirect to="" onSearch={this.performSearch} />} /> 
-            {/* <Route path="/" render={ () => <Gallery data={this.state.pics} /> } /> */}
-            <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
-            <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
-            <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} />} /> 
-            <Route component={NotFound} />
-        </Switch>
-        <div class="photo-container">
-          {
-          (this.state.loading)
-          ? <p>Loading...</p>
-          : <Gallery path="/query" data={this.state.pics} /> 
-          }
-        </div>
+          <div class="photo-container">
+            <Switch>
+              {/* <Route path="/search" render={ () => <Redirect to="" onSearch={this.performSearch} />} />  */}
+              <Route path="/search/:query" render={ () => <Gallery data={this.state.pics} /> } /> 
+              <Route exact path="/" render={ () => <Redirect to="/sunsets" /> } />
+              <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
+              <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
+              <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} />} /> 
+              <Route component={NotFound} />
+          </Switch>
+          </div>
+          {/* <div class="photo-container">
+            {
+            (this.state.loading)
+            ? <p>Loading...</p>
+            : <Gallery path="/search/:query" data={this.state.pics} /> 
+            }
+          </div> */}
         </div>
     </BrowserRouter>
     )
