@@ -88,7 +88,7 @@ export default class App extends PureComponent {
           <div class="photo-container">
             <Switch>
               {/* <Route path="/search" render={ () => <Redirect to="" onSearch={this.performSearch} />} />  */}
-              <Route path="/search/:query" render={ () => <Gallery data={this.state.pics} /> } /> 
+              <Route path="/search/:query" render={ ({match}) => <Gallery data={this.state.pics} /> } /> 
               <Route exact path="/" render={ () => <Redirect to="/sunsets" /> } />
               <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
               <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
