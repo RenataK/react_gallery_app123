@@ -79,30 +79,25 @@ export default class App extends PureComponent {
   }
 
   render() {
-    console.log(this.state.pics);
     return (
       <BrowserRouter>
         <div className="container">
           <SearchForm onSearch={this.performSearch} /> 
           <Nav />
           <div class="photo-container">
-            <Switch>
-              {/* <Route path="/search" render={ () => <Redirect to="" onSearch={this.performSearch} />} />  */}
-              <Route path="/search/:query" render={ ({match}) => <Gallery data={this.state.pics} /> } /> 
-              <Route exact path="/" render={ () => <Redirect to="/sunsets" /> } />
-              <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} />} /> 
-              <Route path="/nature" render={ () => <Gallery data={this.state.nature} />} /> 
-              <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} />} /> 
-              <Route component={NotFound} />
-          </Switch>
-          </div>
-          {/* <div class="photo-container">
-            {
+          {
             (this.state.loading)
             ? <p>Loading...</p>
-            : <Gallery path="/search/:query" data={this.state.pics} /> 
-            }
-          </div> */}
+            : <Switch>
+                <Route exact path="/" render={ () => <Redirect to="/sunsets" /> } />
+                <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} title='Sunsets'/>} /> 
+                <Route path="/nature" render={ () => <Gallery data={this.state.nature} title='Nature' />} /> 
+                <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} title='Puppies' />} /> 
+                <Route path="/search/:query" render={ () => <Gallery data={this.state.pics} />} />
+                <Route component={NotFound} />
+              </Switch>
+          }
+          </div>
         </div>
     </BrowserRouter>
     )

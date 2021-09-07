@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 
-export default class SearchForm extends Component {
+class SearchForm extends Component {
 
     state = {
         searchText: ''
@@ -39,6 +40,9 @@ export default class SearchForm extends Component {
         );
     }
 }
+
+//wrapped the comp with `withRouter` to access history object 
+export default withRouter(SearchForm);
 
 /* 
 As for your custom-search feature, you'll want to modify your current Route component with the /search path.

@@ -20,7 +20,7 @@ const Gallery = (props) => { //different from gif-search
 
     return (
         <div className="photo-container">
-         <h2>Results</h2> 
+         <h2>{props.title}</h2> 
             <ul>
                 {pics}
             </ul>
