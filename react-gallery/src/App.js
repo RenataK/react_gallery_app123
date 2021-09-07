@@ -62,7 +62,8 @@ export default class App extends PureComponent {
       console.log('Error fetching and parsing data', err);
     });
 
-    this.performSearch();
+    //  this.performSearch();
+
   }
 
   performSearch = (query) => {
