@@ -1,6 +1,7 @@
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"; 
 
+//using Navlink to style and keep navigation links active 
 const Nav = () => {
     return (
         <nav class="main-nav">

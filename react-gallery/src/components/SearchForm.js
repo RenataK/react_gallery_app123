@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 
+//statefull comp to manage seach field
 class SearchForm extends Component {
 
     state = {
         searchText: ''
     }
 
+    //searchText state gets updated when user types
     onSearchChange = (e) => {
         this.setState({ searchText: e.target.value });
     }
 
+    //handleSubmit function gets called in the forms onSumbit handler
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.onSearch(this.query.value);
-        e.currentTarget.reset();
-        let userSearch = this.state.searchText;
-        let path = `/search/${userSearch}`;
-        this.props.history.push(path);
+        this.props.onSearch(this.query.value); //passing query that was given to onSearch func to access input value
+        e.currentTarget.reset(); //resets input field after submission
+        let userSearch = this.state.searchText; //storing input in a variable
+        let path = `/search/${userSearch}`; //storing path of search images 
+        this.props.history.push(path); //using history obj to push the path to the url 
     }
 
     render() {
@@ -27,7 +30,7 @@ class SearchForm extends Component {
             <input type="search" 
                 name="search" 
                 onChange={this.onSearchChange} 
-                ref={ (input) => this.query = input }
+                ref={ (input) => this.query = input } //using ref to access input value 
                 placeholder="Search" required/>
             <button type="submit" class="search-button">
             <svg fill="#fff" height="24" viewBox="0 0 23 23" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -43,14 +46,3 @@ class SearchForm extends Component {
 
 //wrapped the comp with `withRouter` to access history object 
 export default withRouter(SearchForm);
-
-/* 
-As for your custom-search feature, you'll want to modify your current Route component with the /search path.
-Try removing that Redirect component and replace it with a Gallery component.
-You'll also want to modify the path,/search, by adding on a dynamic paremeter to it, such as /search/:query.
-
-In your SearchForm.handleSubmit method, you'll need to manipulate the browsers history so that the user will be brought to the /search/:query route, where query is whatever your SearchForm.state.searchText value is.
-There is a little bit of setup to do that, but it's not much!
-You'll just need to take care with setting it up.
-Check out the history object for doing this: https://github.com/remix-run/history/blob/main/docs/getting-started.md#user-content-basic-usage :slightly_smiling_face:
-*/
