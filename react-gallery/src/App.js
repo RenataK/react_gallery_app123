@@ -97,7 +97,7 @@ export default class App extends PureComponent {
         <div className="container">
           <SearchForm onSearch={this.performSearch} /> {/*giving onSearch prop to SearchForm which executes preformSearch func when called */}
           <Nav />
-          <div class="photo-container">
+          <div className="photo-container">
           {
             (this.state.loading)
             ? <p>Loading...</p> //Displays loading indicator if data is being fetched
