@@ -7,6 +7,7 @@ import {
   Switch,
   Redirect,
   withRouter} from "react-router-dom";
+
 //App Comps
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
@@ -17,7 +18,6 @@ import NotFound from './components/NotFound';
 import apiKey from './config';
 
 //Statefull comp where data is managed 
-// export default class App extends PureComponent {
   class App extends PureComponent {
 
   //initialized state
@@ -91,9 +91,12 @@ import apiKey from './config';
     });
   }
 
+  //function to sync url and query to display data using back/forward buttons
   componentDidUpdate(prevState) {
-    if (this.props.location.pathname !== prevState.location.pathname) {
-      this.performSearch(prevState.location.pathname);
+    if (this.props.location.pathname.includes('search/')) {
+      if (this.props.location.pathname !== prevState.location.pathname) {
+        this.performSearch(this.props.location.pathname.slice(8));
+      } 
     }
   }
 
@@ -125,5 +128,5 @@ import apiKey from './config';
     )
   }
 }
-
+//exporting withRouter to access history obj in componentDidUpdate
 export default withRouter(App);
