@@ -6,7 +6,6 @@ import Photo from './Photo';
 import NotFound from './NotFound';
 
 const Gallery = (props) => { 
-
     const results = props.data; //data that was passed to Gallery in App.js
     let pics;
     if (results.length > 0) { //mapping thru results to determine if image is found

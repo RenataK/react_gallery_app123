@@ -74,8 +74,6 @@ import apiKey from './config';
   //Using axios to get the url of the searched picture with query. 
   performSearch = (query) => { //using query to get the value of search field when user searches photos
 
-    console.log(this.props.location.pathname);
-
     this.setState({
       loading: true //setting loading state to true before data is fetched
     });
@@ -85,13 +83,18 @@ import apiKey from './config';
      this.setState({
         pics: res.data.photos.photo,
         loading: false,
-        query: query,
-        url: `/search/${query}`
+        query: query
       });
     })
     .catch(err => {
       console.log('Error fetching and parsing data', err);
     });
+  }
+
+  componentDidUpdate(prevState) {
+    if (this.props.location.pathname !== prevState.location.pathname) {
+      this.performSearch(prevState.location.pathname);
+    }
   }
 
   //wrapping in BrowserRouter to keep URL in sync and Switch to display the NotFound component when url isn't matched.
@@ -123,4 +126,8 @@ import apiKey from './config';
   }
 }
 
+
+//Perhaps you could research the following docs on React Router's history object, 
+//that way you can grab the query from the url and pass it into your perform search function. 
+//That way the photos will always match the url.
 export default withRouter(App);
