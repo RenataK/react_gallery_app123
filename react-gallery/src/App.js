@@ -5,8 +5,8 @@ import {
   Route, 
   BrowserRouter, 
   Switch,
-  Redirect } from "react-router-dom";
-
+  Redirect,
+  withRouter} from "react-router-dom";
 //App Comps
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
@@ -17,7 +17,8 @@ import NotFound from './components/NotFound';
 import apiKey from './config';
 
 //Statefull comp where data is managed 
-export default class App extends PureComponent {
+// export default class App extends PureComponent {
+  class App extends PureComponent {
 
   //initialized state
   constructor() {
@@ -27,13 +28,15 @@ export default class App extends PureComponent {
       sunsets: [], 
       nature: [],
       puppies: [],
-      query: [], //using query to pass the name of image displayed (line 109)
+      query: [], //using query to pass the name of image displayed
       loading: true
     };
   } 
-
   // Using axios to get the url for 3 default topics, setting loading indicator to false when data is fetched. 
   componentDidMount() {
+    this.setState({
+      loading: true
+    });
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=sunsets&per_page=24&format=json&nojsoncallback=1`)
     .then(res => {
       this.setState({
@@ -66,11 +69,13 @@ export default class App extends PureComponent {
     .catch(err => {
       console.log('Error fetching and parsing data', err);
     });
-
   }
 
   //Using axios to get the url of the searched picture with query. 
   performSearch = (query) => { //using query to get the value of search field when user searches photos
+
+    console.log(this.props.location.pathname);
+
     this.setState({
       loading: true //setting loading state to true before data is fetched
     });
@@ -80,7 +85,8 @@ export default class App extends PureComponent {
      this.setState({
         pics: res.data.photos.photo,
         loading: false,
-        query: query
+        query: query,
+        url: `/search/${query}`
       });
     })
     .catch(err => {
@@ -95,7 +101,7 @@ export default class App extends PureComponent {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm onSearch={this.performSearch} /> {/*giving onSearch prop to SearchForm which executes preformSearch func when called */}
+          <SearchForm onSearch={this.performSearch}/> {/*giving onSearch prop to SearchForm which executes preformSearch func when called */}
           <Nav />
           <div className="photo-container">
           {
@@ -106,7 +112,7 @@ export default class App extends PureComponent {
                 <Route path="/sunsets" render={ () => <Gallery data={this.state.sunsets} tags='Sunsets'/>} /> 
                 <Route path="/nature" render={ () => <Gallery data={this.state.nature} tags='Nature' />} /> 
                 <Route path="/puppies" render={ () => <Gallery data={this.state.puppies} tags='Puppies' />} /> 
-                <Route path="/search/:query" render={ () => <Gallery data={this.state.pics} tags={this.state.query}/>} /> {/*passing query parameter to the url*/}
+                <Route path="/search/:query" render={ () => <Gallery data={this.state.pics} tags={this.state.query} />} /> {/*passing query parameter to the url*/}
                 <Route component={NotFound} />
               </Switch>
           }
@@ -117,3 +123,4 @@ export default class App extends PureComponent {
   }
 }
 
+export default withRouter(App);
