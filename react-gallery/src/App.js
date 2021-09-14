@@ -126,8 +126,4 @@ import apiKey from './config';
   }
 }
 
-
-//Perhaps you could research the following docs on React Router's history object, 
-//that way you can grab the query from the url and pass it into your perform search function. 
-//That way the photos will always match the url.
 export default withRouter(App);
