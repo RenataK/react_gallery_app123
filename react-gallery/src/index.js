@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-  <BrowserRouter> {/*wrapped in BrowserRouter to export App Comp */}
+  <BrowserRouter basename="/react_gallery_app123"> {/*gave BrowserRouter a basename so when app is deployed the home route is "/react_gallery_app123" instead of "/"*/}
     <App />
   </BrowserRouter>
   </React.StrictMode>,

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import { 
   Route, 
-  BrowserRouter, 
+  HashRouter, 
   Switch,
   Redirect,
   withRouter} from "react-router-dom";
@@ -105,7 +105,7 @@ import apiKey from './config';
   //passing data to gallery component via Route, along with tags for defining name of image displayed
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter basename="/react_gallery_app123"> {/*using HashRouter instead of BrowserRouter to keep url in sync, when app is deployed via Github pages */}
         <div className="container">
           <SearchForm onSearch={this.performSearch}/> {/*giving onSearch prop to SearchForm which executes preformSearch func when called */}
           <Nav />
@@ -124,7 +124,7 @@ import apiKey from './config';
           }
           </div>
         </div>
-    </BrowserRouter>
+    </HashRouter>
     )
   }
 }
